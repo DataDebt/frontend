@@ -1,0 +1,17 @@
+export const C = {
+  bg: "#edf7f2",
+  bgDark: "#d4ede2",
+  sidebar: "#0f3d2b",
+  sidebarHover: "#1a5c41",
+  sidebarActive: "#24794f",
+  accent: "#2d9f65",
+  accentLight: "#42c47f",
+  danger: "#e05252",
+  warn: "#e09b40",
+  success: "#3aad6b",
+  text: "#0d2b1d",
+  textMuted: "#5a8a72",
+  card: "rgba(255,255,255,0.82)",
+  cardBorder: "rgba(45,159,101,0.18)",
+  white: "#fff",
+};
