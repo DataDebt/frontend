@@ -56,8 +56,10 @@ export default function LoginScreen() {
     try {
       const response = await register(details);
 
-      if (!response?.accessToken) {
-        setNotice("Account created. Check your inbox to verify your email before signing in.");
+      if (response.status === "pending_verification") {
+        setNotice(response.message);
+      } else {
+        setNotice("");
       }
     } finally {
       setIsSubmitting(false);

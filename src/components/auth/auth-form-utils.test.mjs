@@ -16,14 +16,28 @@ test("validateLoginFields flags invalid email and short password", () => {
 test("validateRegisterFields requires name and matching passwords", () => {
   assert.deepEqual(
     validateRegisterFields({
-      name: "",
+      username: "ab",
       email: "person@example.com",
       password: "password1",
       confirmPassword: "password2",
     }),
     {
-      name: "Ingresa tu nombre",
+      username: "El usuario debe tener al menos 3 caracteres",
       confirmPassword: "Las contraseñas no coinciden",
+    }
+  );
+});
+
+test("validateRegisterFields requires a username", () => {
+  assert.deepEqual(
+    validateRegisterFields({
+      username: "",
+      email: "person@example.com",
+      password: "password1",
+      confirmPassword: "password1",
+    }),
+    {
+      username: "Ingresa tu usuario",
     }
   );
 });

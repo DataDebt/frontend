@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 import { ApiError, fetchJson } from "@/lib/api";
 import { getAuthErrorMessage } from "@/lib/auth-errors";
 import { clearAuthTokens, getAuthTokens, setAuthTokens } from "@/lib/auth-storage";
+import { normalizeRegisterResult } from "./register-result.mjs";
 
 const AuthContext = createContext(null);
 
@@ -40,11 +41,11 @@ async function loginRequest(email, password) {
   });
 }
 
-async function registerRequest({ name, email, password }) {
+async function registerRequest({ username, email, password }) {
   return fetchJson("/auth/register", {
     method: "POST",
     body: {
-      username: name,
+      username,
       email,
       password,
     },
@@ -107,6 +108,7 @@ export function AuthProvider({ children }) {
         const user = await fetchCurrentUser(accessToken);
         setAuthState(buildAuthenticatedState({ user, accessToken, refreshToken }));
         return {
+          status: "authenticated",
           user,
           accessToken,
           refreshToken,
@@ -135,6 +137,7 @@ export function AuthProvider({ children }) {
         );
 
         return {
+          status: "authenticated",
           user,
           accessToken: nextAccessToken,
           refreshToken: nextRefreshToken,
@@ -217,7 +220,7 @@ export function AuthProvider({ children }) {
           ...current,
           error: null,
         }));
-        return response;
+        return normalizeRegisterResult(response);
       }
 
       setAuthTokens({
@@ -234,14 +237,14 @@ export function AuthProvider({ children }) {
   );
 
   const register = useCallback(
-    async ({ name, email, password }) => {
+    async ({ username, email, password }) => {
       setAuthState((current) => ({
         ...current,
         error: null,
       }));
 
       try {
-        const response = await registerRequest({ name, email, password });
+        const response = await registerRequest({ username, email, password });
         return await completeAuthentication(response);
       } catch (error) {
         setAuthState({
