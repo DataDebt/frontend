@@ -17,3 +17,14 @@ export function normalizeRegisterResult(payload) {
     message: payload?.message || payload?.detail || "Check your inbox to verify your email before signing in.",
   };
 }
+
+export function getRegisterAuthenticationTokens(result) {
+  if (result?.status !== "authenticated" || !result.accessToken || !result.refreshToken) {
+    return null;
+  }
+
+  return {
+    accessToken: result.accessToken,
+    refreshToken: result.refreshToken,
+  };
+}
