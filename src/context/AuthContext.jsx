@@ -14,6 +14,15 @@ function isUnauthorizedError(error) {
   return error instanceof ApiError && (error.status === 401 || error.status === 403);
 }
 
+function createNormalizedAuthActionError(error, fallbackMessage) {
+  const message =
+    error instanceof ApiError ? getAuthErrorMessage(error.status, error.data, fallbackMessage) : fallbackMessage;
+
+  return new Error(message, {
+    cause: error,
+  });
+}
+
 async function fetchCurrentUser(accessToken) {
   return fetchJson("/users/me", {
     accessToken,
@@ -317,42 +326,18 @@ export function AuthProvider({ children }) {
   }, []);
 
   const confirmEmail = useCallback(async ({ token }) => {
-    setAuthState((current) => ({
-      ...current,
-      error: null,
-    }));
-
     try {
       return await confirmEmailRequest(token);
     } catch (error) {
-      setAuthState((current) => ({
-        ...current,
-        error:
-          error instanceof ApiError
-            ? getAuthErrorMessage(error.status, error.data, "We could not confirm your email.")
-            : "We could not confirm your email.",
-      }));
-      throw error;
+      throw createNormalizedAuthActionError(error, "We could not confirm your email.");
     }
   }, []);
 
   const resetPassword = useCallback(async ({ token, newPassword }) => {
-    setAuthState((current) => ({
-      ...current,
-      error: null,
-    }));
-
     try {
       return await resetPasswordRequest(token, newPassword);
     } catch (error) {
-      setAuthState((current) => ({
-        ...current,
-        error:
-          error instanceof ApiError
-            ? getAuthErrorMessage(error.status, error.data, "We could not reset your password.")
-            : "We could not reset your password.",
-      }));
-      throw error;
+      throw createNormalizedAuthActionError(error, "We could not reset your password.");
     }
   }, []);
 
