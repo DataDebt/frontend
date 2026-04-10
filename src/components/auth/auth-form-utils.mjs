@@ -16,11 +16,13 @@ export function validateLoginFields({ email, password }) {
   return errors;
 }
 
-export function validateRegisterFields({ name, email, password, confirmPassword }) {
+export function validateRegisterFields({ username, email, password, confirmPassword }) {
   const errors = {};
 
-  if (!(name || "").trim()) {
-    errors.name = "Ingresa tu nombre";
+  if (!(username || "").trim()) {
+    errors.username = "Ingresa tu usuario";
+  } else if (username.trim().length < 3) {
+    errors.username = "El usuario debe tener al menos 3 caracteres";
   }
 
   if (!isValidEmail(email)) {

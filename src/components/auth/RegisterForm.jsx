@@ -26,7 +26,7 @@ export default function RegisterForm({
   onSwitchToLogin,
   successMessage,
 }) {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -43,7 +43,7 @@ export default function RegisterForm({
 
   async function handleSubmit() {
     const nextErrors = validateRegisterFields({
-      name,
+      username,
       email,
       password,
       confirmPassword,
@@ -60,7 +60,7 @@ export default function RegisterForm({
     setResendMessage("");
 
     try {
-      await onSubmit({ name, email, password });
+      await onSubmit({ username, email, password });
     } catch {
       triggerShake();
     }
@@ -95,16 +95,18 @@ export default function RegisterForm({
     <>
       <div style={{ marginBottom: 16 }}>
         <input
-          placeholder="Name"
-          value={name}
+          placeholder="Username"
+          value={username}
           onChange={(event) => {
-            setName(event.target.value);
+            setUsername(event.target.value);
             setFieldErrors({});
             setResendMessage("");
           }}
-          style={formInputStyle(Boolean(fieldErrors.name))}
+          style={formInputStyle(Boolean(fieldErrors.username))}
         />
-        {fieldErrors.name && <p style={{ color: C.danger, fontSize: 12, marginTop: 4 }}>{fieldErrors.name}</p>}
+        {fieldErrors.username && (
+          <p style={{ color: C.danger, fontSize: 12, marginTop: 4 }}>{fieldErrors.username}</p>
+        )}
       </div>
 
       <div style={{ marginBottom: 16 }}>
