@@ -1,7 +1,33 @@
 import { C } from "@/constants/colors";
 import { MdDomain, MdBarChart, MdAssignment, MdLogout } from "react-icons/md";
 
-export default function Sidebar({ role, active, onNav, onLogout }) {
+function getUserDisplayName(user, role) {
+  if (user?.username) {
+    return user.username;
+  }
+
+  if (user?.email) {
+    return user.email.split("@")[0];
+  }
+
+  return role === "admin" ? "Administrador" : "Usuario";
+}
+
+function getUserInitials(user, role) {
+  const source = user?.username || user?.email || (role === "admin" ? "Administrador" : "Usuario");
+  const words = source
+    .replace(/[@._-]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  return words
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase() || "")
+    .join("") || "U";
+}
+
+export default function Sidebar({ role, active, onNav, onLogout, user = null }) {
   const adminItems = [
     { key: "domains", icon: <MdDomain size={20} />, label: "Dominios" },
     { key: "reports", icon: <MdBarChart size={20} />, label: "Reportes" },
@@ -11,6 +37,9 @@ export default function Sidebar({ role, active, onNav, onLogout }) {
     { key: "my-evaluations", icon: <MdAssignment size={20} />, label: "Mis Evaluaciones" },
   ];
   const items = role === "admin" ? adminItems : userItems;
+  const displayName = getUserDisplayName(user, role);
+  const displayEmail = user?.email || (role === "admin" ? "admin@demo.com" : "user@demo.com");
+  const avatarText = getUserInitials(user, role);
 
   return (
     <div style={{ width: 230, minHeight: "100vh", background: C.sidebar, display: "flex", flexDirection: "column", boxShadow: "4px 0 24px rgba(0,0,0,0.18)", position: "relative", zIndex: 10 }}>
@@ -56,18 +85,21 @@ export default function Sidebar({ role, active, onNav, onLogout }) {
       <div style={{ padding: "16px 12px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10, background: "rgba(255,255,255,0.06)", marginBottom: 8 }}>
           <div style={{ width: 32, height: 32, borderRadius: "50%", background: `linear-gradient(135deg, ${C.accent}, #1a5c3a)`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 13 }}>
-            {role === "admin" ? "A" : "U"}
+            {avatarText}
           </div>
           <div>
-            <div style={{ color: "#fff", fontSize: 13, fontWeight: 600 }}>{role === "admin" ? "Administrador" : "Usuario"}</div>
-            <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>{role === "admin" ? "admin@demo.com" : "user@demo.com"}</div>
+            <div style={{ color: "#fff", fontSize: 13, fontWeight: 600 }}>{displayName}</div>
+            <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>{displayEmail}</div>
           </div>
         </div>
         <button onClick={onLogout} style={{ width: "100%", padding: "9px", background: "rgba(255,255,255,0.06)", border: "none", borderRadius: 8, color: "rgba(255,255,255,0.5)", fontSize: 13, cursor: "pointer", transition: "all .2s" }}
           onMouseEnter={e => { e.currentTarget.style.background = "rgba(224,82,82,0.2)"; e.currentTarget.style.color = "#f87171"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "rgba(255,255,255,0.5)"; }}
         >
-         Cerrar sesión ⏻  
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 8, justifyContent: "center" }}>
+            <MdLogout size={16} />
+            Cerrar sesión
+          </span>
         </button>
       </div>
     </div>
