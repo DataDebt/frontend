@@ -2,36 +2,66 @@ const ACCESS_TOKEN_KEY = "datadebt.auth.accessToken";
 const REFRESH_TOKEN_KEY = "datadebt.auth.refreshToken";
 
 function canUseLocalStorage() {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return typeof window !== "undefined";
 }
 
-function readValue(key) {
+function getLocalStorage() {
   if (!canUseLocalStorage()) {
     return null;
   }
 
-  return window.localStorage.getItem(key);
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+function readValue(key) {
+  const storage = getLocalStorage();
+
+  if (!storage) {
+    return null;
+  }
+
+  try {
+    return storage.getItem(key);
+  } catch {
+    return null;
+  }
 }
 
 function writeValue(key, value) {
-  if (!canUseLocalStorage()) {
+  const storage = getLocalStorage();
+
+  if (!storage) {
     return;
   }
 
-  if (value == null || value === "") {
-    window.localStorage.removeItem(key);
+  try {
+    if (value == null || value === "") {
+      storage.removeItem(key);
+      return;
+    }
+
+    storage.setItem(key, String(value));
+  } catch {
     return;
   }
-
-  window.localStorage.setItem(key, String(value));
 }
 
 function clearValue(key) {
-  if (!canUseLocalStorage()) {
+  const storage = getLocalStorage();
+
+  if (!storage) {
     return;
   }
 
-  window.localStorage.removeItem(key);
+  try {
+    storage.removeItem(key);
+  } catch {
+    return;
+  }
 }
 
 export function getAccessToken() {
