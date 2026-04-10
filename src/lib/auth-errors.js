@@ -18,12 +18,18 @@ function extractBackendDetail(responseOrDetail) {
     return responseOrDetail;
   }
 
+  function getStringValue(value) {
+    return typeof value === "string" ? value : null;
+  }
+
   if (typeof responseOrDetail === "object") {
     return (
-      responseOrDetail.detail ||
-      responseOrDetail.message ||
-      responseOrDetail.error ||
-      (Array.isArray(responseOrDetail.non_field_errors) ? responseOrDetail.non_field_errors[0] : null)
+      getStringValue(responseOrDetail.detail) ||
+      getStringValue(responseOrDetail.message) ||
+      getStringValue(responseOrDetail.error) ||
+      (Array.isArray(responseOrDetail.non_field_errors)
+        ? getStringValue(responseOrDetail.non_field_errors[0])
+        : null)
     );
   }
 
