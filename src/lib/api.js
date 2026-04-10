@@ -10,6 +10,14 @@ function isAbsoluteUrl(value) {
   return /^https?:\/\//i.test(value);
 }
 
+function getUrlOrigin(value) {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return null;
+  }
+}
+
 function normalizePath(path) {
   if (!path) {
     return "";
@@ -93,6 +101,25 @@ export function buildApiUrl(path = "") {
   return `${getApiBaseUrl()}${normalizePath(path)}`;
 }
 
+function shouldAttachAuthHeader(path, requestUrl, explicitSendAuth) {
+  if (explicitSendAuth === true) {
+    return true;
+  }
+
+  if (explicitSendAuth === false) {
+    return false;
+  }
+
+  if (!isAbsoluteUrl(path)) {
+    return true;
+  }
+
+  const apiOrigin = getUrlOrigin(getApiBaseUrl());
+  const requestOrigin = getUrlOrigin(requestUrl);
+
+  return Boolean(apiOrigin && requestOrigin && apiOrigin === requestOrigin);
+}
+
 function prepareBody(body, headers) {
   if (body == null) {
     return undefined;
@@ -119,6 +146,7 @@ export async function apiRequest(path, options = {}) {
     method = "GET",
     token,
     accessToken,
+    sendAuth,
     ...fetchOptions
   } = options;
 
@@ -129,13 +157,14 @@ export async function apiRequest(path, options = {}) {
     }
   }
 
+  const requestUrl = buildApiUrl(path);
   const authToken = accessToken ?? token;
-  if (authToken) {
+  if (authToken && shouldAttachAuthHeader(path, requestUrl, sendAuth)) {
     headers.set("Authorization", `Bearer ${authToken}`);
   }
 
   const requestBody = prepareBody(body, headers);
-  const response = await fetch(buildApiUrl(path), {
+  const response = await fetch(requestUrl, {
     ...fetchOptions,
     method,
     headers,
@@ -149,7 +178,7 @@ export async function apiRequest(path, options = {}) {
       message: getResponseMessage(data, response.status),
       status: response.status,
       data,
-      url: response.url || buildApiUrl(path),
+      url: response.url || requestUrl,
       method,
     });
   }
