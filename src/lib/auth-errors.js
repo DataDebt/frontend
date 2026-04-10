@@ -30,12 +30,38 @@ function extractBackendDetail(responseOrDetail) {
   return null;
 }
 
+function isGenericForbiddenDetail(detail) {
+  if (!detail) {
+    return false;
+  }
+
+  const normalizedDetail = detail.trim().toLowerCase();
+
+  return (
+    normalizedDetail === "forbidden" ||
+    normalizedDetail === "access denied" ||
+    normalizedDetail === "permission denied" ||
+    normalizedDetail.includes("do not have permission") ||
+    normalizedDetail.includes("does not have permission") ||
+    normalizedDetail.includes("not have permission") ||
+    normalizedDetail.includes("permission to perform this action") ||
+    normalizedDetail.includes("permission to access this resource") ||
+    normalizedDetail.includes("not allowed")
+  );
+}
+
 export function getAuthErrorMessage(
   status,
   responseOrDetail,
   fallback = "Something went wrong during authentication. Please try again."
 ) {
   const backendDetail = extractBackendDetail(responseOrDetail);
+
+  if (status === 403) {
+    if (!backendDetail || isGenericForbiddenDetail(backendDetail)) {
+      return AUTH_ERROR_MESSAGES[status] || fallback;
+    }
+  }
 
   if (backendDetail) {
     return backendDetail;
