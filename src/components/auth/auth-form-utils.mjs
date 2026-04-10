@@ -51,3 +51,23 @@ export function validatePasswordResetRequest({ email }) {
 
   return errors;
 }
+
+export function validateResetPasswordFields({ token, password, confirmPassword }) {
+  const errors = {};
+
+  if (!(token || "").trim()) {
+    errors.token = "Missing reset token";
+  }
+
+  if ((password || "").length < 8) {
+    errors.password = "La contraseña debe tener al menos 8 caracteres";
+  }
+
+  if ((confirmPassword || "").length === 0) {
+    errors.confirmPassword = "Confirma tu contraseña";
+  } else if (confirmPassword !== password) {
+    errors.confirmPassword = "Las contraseñas no coinciden";
+  }
+
+  return errors;
+}

@@ -73,6 +73,23 @@ async function requestPasswordResetRequest(email) {
   });
 }
 
+async function confirmEmailRequest(token) {
+  return fetchJson(`/auth/confirm-email?token=${encodeURIComponent(token)}`, {
+    sendAuth: false,
+  });
+}
+
+async function resetPasswordRequest(token, newPassword) {
+  return fetchJson("/auth/reset-password", {
+    method: "POST",
+    body: {
+      token,
+      new_password: newPassword,
+    },
+    sendAuth: false,
+  });
+}
+
 function buildAuthenticatedState({ user, accessToken, refreshToken, error = null }) {
   return {
     status: "authenticated",
@@ -299,6 +316,46 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  const confirmEmail = useCallback(async ({ token }) => {
+    setAuthState((current) => ({
+      ...current,
+      error: null,
+    }));
+
+    try {
+      return await confirmEmailRequest(token);
+    } catch (error) {
+      setAuthState((current) => ({
+        ...current,
+        error:
+          error instanceof ApiError
+            ? getAuthErrorMessage(error.status, error.data, "We could not confirm your email.")
+            : "We could not confirm your email.",
+      }));
+      throw error;
+    }
+  }, []);
+
+  const resetPassword = useCallback(async ({ token, newPassword }) => {
+    setAuthState((current) => ({
+      ...current,
+      error: null,
+    }));
+
+    try {
+      return await resetPasswordRequest(token, newPassword);
+    } catch (error) {
+      setAuthState((current) => ({
+        ...current,
+        error:
+          error instanceof ApiError
+            ? getAuthErrorMessage(error.status, error.data, "We could not reset your password.")
+            : "We could not reset your password.",
+      }));
+      throw error;
+    }
+  }, []);
+
   const clearError = useCallback(() => {
     setAuthState((current) => ({
       ...current,
@@ -317,11 +374,13 @@ export function AuthProvider({ children }) {
       value={{
         ...authState,
         clearError,
+        confirmEmail,
         isAuthenticated: authState.status === "authenticated",
         isRestoring: authState.status === "loading",
         login,
         logout,
         register,
+        resetPassword,
         resendVerification,
         requestPasswordReset,
         restoreSession,

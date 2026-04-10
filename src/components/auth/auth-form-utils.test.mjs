@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   validateLoginFields,
   validatePasswordResetRequest,
+  validateResetPasswordFields,
   validateRegisterFields,
 } from "./auth-form-utils.mjs";
 
@@ -44,4 +45,30 @@ test("validateRegisterFields requires a username", () => {
 
 test("validatePasswordResetRequest accepts a valid email", () => {
   assert.deepEqual(validatePasswordResetRequest({ email: "person@example.com" }), {});
+});
+
+test("validateResetPasswordFields requires token, password length, and matching confirmation", () => {
+  assert.deepEqual(
+    validateResetPasswordFields({
+      token: "",
+      password: "short",
+      confirmPassword: "different",
+    }),
+    {
+      token: "Missing reset token",
+      password: "La contraseña debe tener al menos 8 caracteres",
+      confirmPassword: "Las contraseñas no coinciden",
+    }
+  );
+});
+
+test("validateResetPasswordFields accepts a valid token and matching passwords", () => {
+  assert.deepEqual(
+    validateResetPasswordFields({
+      token: "abc123",
+      password: "password1",
+      confirmPassword: "password1",
+    }),
+    {}
+  );
 });
