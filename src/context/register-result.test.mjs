@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { normalizeRegisterResult } from "./register-result.mjs";
+import { getRegisterAuthenticationTokens, normalizeRegisterResult } from "./register-result.mjs";
 
 test("normalizeRegisterResult returns pending verification when tokens are missing", () => {
   assert.deepEqual(normalizeRegisterResult({ message: "Verify your email" }), {
@@ -41,6 +41,21 @@ test("normalizeRegisterResult normalizes raw backend authenticated fields", () =
       user,
       accessToken: "raw-access",
       refreshToken: "raw-refresh",
+    }
+  );
+});
+
+test("getRegisterAuthenticationTokens returns session tokens for camelCase authenticated register result", () => {
+  assert.deepEqual(
+    getRegisterAuthenticationTokens({
+      status: "authenticated",
+      user: { id: 3, username: "camel-user" },
+      accessToken: "camel-access",
+      refreshToken: "camel-refresh",
+    }),
+    {
+      accessToken: "camel-access",
+      refreshToken: "camel-refresh",
     }
   );
 });

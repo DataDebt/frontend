@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 import { ApiError, fetchJson } from "@/lib/api";
 import { getAuthErrorMessage } from "@/lib/auth-errors";
 import { clearAuthTokens, getAuthTokens, setAuthTokens } from "@/lib/auth-storage";
-import { normalizeRegisterResult } from "./register-result.mjs";
+import { getRegisterAuthenticationTokens, normalizeRegisterResult } from "./register-result.mjs";
 
 const AuthContext = createContext(null);
 
@@ -211,26 +211,25 @@ export function AuthProvider({ children }) {
   );
 
   const completeAuthentication = useCallback(
-    async (response) => {
-      const accessToken = response?.access_token;
-      const refreshToken = response?.refresh_token;
+    async (result) => {
+      const tokens = getRegisterAuthenticationTokens(result);
 
-      if (!accessToken || !refreshToken) {
+      if (!tokens) {
         setAuthState((current) => ({
           ...current,
           error: null,
         }));
-        return normalizeRegisterResult(response);
+        return result;
       }
 
       setAuthTokens({
-        accessToken,
-        refreshToken,
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
       });
 
       return hydrateAuthenticatedSession({
-        accessToken,
-        refreshToken,
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
       });
     },
     [hydrateAuthenticatedSession]
@@ -244,8 +243,8 @@ export function AuthProvider({ children }) {
       }));
 
       try {
-        const response = await registerRequest({ username, email, password });
-        return await completeAuthentication(response);
+        const registerResult = normalizeRegisterResult(await registerRequest({ username, email, password }));
+        return await completeAuthentication(registerResult);
       } catch (error) {
         setAuthState({
           ...unauthenticatedState,
