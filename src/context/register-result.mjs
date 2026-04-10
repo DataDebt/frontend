@@ -1,10 +1,14 @@
 export function normalizeRegisterResult(payload) {
-  if (payload?.accessToken && payload?.refreshToken && payload?.user) {
+  const accessToken = payload?.accessToken || payload?.access_token || null;
+  const refreshToken = payload?.refreshToken || payload?.refresh_token || null;
+  const user = payload?.user || null;
+
+  if (accessToken && refreshToken && user) {
     return {
       status: "authenticated",
-      user: payload.user,
-      accessToken: payload.accessToken,
-      refreshToken: payload.refreshToken,
+      user,
+      accessToken,
+      refreshToken,
     };
   }
 
