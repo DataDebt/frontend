@@ -7,5 +7,6 @@ function getToken(searchParams) {
 
 export default async function ConfirmEmailPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  return <ConfirmEmailClient token={getToken(resolvedSearchParams)} />;
+  const token = getToken(resolvedSearchParams);
+  return <ConfirmEmailClient key={token || "missing-token"} token={token} />;
 }

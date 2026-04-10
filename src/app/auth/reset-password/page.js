@@ -7,5 +7,6 @@ function getToken(searchParams) {
 
 export default async function ResetPasswordPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  return <ResetPasswordClient token={getToken(resolvedSearchParams)} />;
+  const token = getToken(resolvedSearchParams);
+  return <ResetPasswordClient key={token || "missing-token"} token={token} />;
 }

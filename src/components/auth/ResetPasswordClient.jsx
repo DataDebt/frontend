@@ -8,15 +8,16 @@ import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 import { useAuth } from "@/context/AuthContext";
 
 export default function ResetPasswordClient({ token }) {
-  const { clearError, error, resetPassword } = useAuth();
+  const { resetPassword } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [notice, setNotice] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleResetPassword({ token: resetToken, newPassword }) {
     setIsSubmitting(true);
     setNotice("");
-    clearError();
+    setErrorMessage("");
 
     try {
       const response = await resetPassword({
@@ -27,6 +28,9 @@ export default function ResetPasswordClient({ token }) {
       setIsComplete(true);
       setNotice(response?.message || response?.detail || "Your password has been updated.");
       return response;
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "We could not reset your password.");
+      throw error;
     } finally {
       setIsSubmitting(false);
     }
@@ -61,7 +65,7 @@ export default function ResetPasswordClient({ token }) {
         />
       ) : (
         <ResetPasswordForm
-          error={error}
+          error={errorMessage}
           isSubmitting={isSubmitting}
           onSubmit={handleResetPassword}
           token={token}

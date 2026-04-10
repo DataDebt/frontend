@@ -6,15 +6,14 @@ import AuthStatusCard from "@/components/auth/AuthStatusCard";
 import { useAuth } from "@/context/AuthContext";
 
 export default function ConfirmEmailClient({ token }) {
-  const { clearError, confirmEmail, error } = useAuth();
+  const { confirmEmail } = useAuth();
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("We're validating your confirmation link and activating your account.");
+  const [errorMessage, setErrorMessage] = useState("");
   const attemptedTokenRef = useRef(null);
   const missingToken = !token;
 
   useEffect(() => {
-    clearError();
-
     if (missingToken) {
       return;
     }
@@ -36,19 +35,24 @@ export default function ConfirmEmailClient({ token }) {
         setStatus("success");
         setMessage(response?.message || response?.detail || "Your email has been confirmed. You can sign in now.");
       })
-      .catch(() => {
+      .catch((error) => {
         if (!isActive) {
           return;
         }
 
         setStatus("error");
-        setMessage("We could not confirm this email link. It may have expired or already been used.");
+        setMessage("We could not confirm this email link.");
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "This confirmation link may have expired, already been used, or is otherwise invalid."
+        );
       });
 
     return () => {
       isActive = false;
     };
-  }, [clearError, confirmEmail, missingToken, token]);
+  }, [confirmEmail, missingToken, token]);
 
   if (missingToken) {
     return (
@@ -76,7 +80,7 @@ export default function ConfirmEmailClient({ token }) {
               : "Confirming your email"
         }
         message={message}
-        detail={status === "error" ? error : null}
+        detail={status === "error" ? errorMessage : null}
         primaryAction={status === "loading" ? null : { href: "/", label: "Go to sign in" }}
         secondaryAction={status === "error" ? { href: "/", label: "Back to authentication" } : null}
       />
