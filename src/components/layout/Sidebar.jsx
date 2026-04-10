@@ -1,31 +1,6 @@
 import { C } from "@/constants/colors";
 import { MdDomain, MdBarChart, MdAssignment, MdLogout } from "react-icons/md";
-
-function getUserDisplayName(user, role) {
-  if (user?.username) {
-    return user.username;
-  }
-
-  if (user?.email) {
-    return user.email.split("@")[0];
-  }
-
-  return role === "admin" ? "Administrador" : "Usuario";
-}
-
-function getUserInitials(user, role) {
-  const source = user?.username || user?.email || (role === "admin" ? "Administrador" : "Usuario");
-  const words = source
-    .replace(/[@._-]+/g, " ")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-
-  return words
-    .slice(0, 2)
-    .map((word) => word[0]?.toUpperCase() || "")
-    .join("") || "U";
-}
+import { getUserDisplayName, getUserEmailLabel, getUserInitials } from "./sidebar-user.mjs";
 
 export default function Sidebar({ role, active, onNav, onLogout, user = null }) {
   const adminItems = [
@@ -38,7 +13,7 @@ export default function Sidebar({ role, active, onNav, onLogout, user = null }) 
   ];
   const items = role === "admin" ? adminItems : userItems;
   const displayName = getUserDisplayName(user, role);
-  const displayEmail = user?.email || (role === "admin" ? "admin@demo.com" : "user@demo.com");
+  const displayEmail = getUserEmailLabel(user);
   const avatarText = getUserInitials(user, role);
 
   return (

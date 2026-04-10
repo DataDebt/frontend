@@ -40,6 +40,38 @@ async function loginRequest(email, password) {
   });
 }
 
+async function registerRequest({ name, email, password }) {
+  return fetchJson("/auth/register", {
+    method: "POST",
+    body: {
+      username: name,
+      email,
+      password,
+    },
+    sendAuth: false,
+  });
+}
+
+async function resendVerificationRequest(email) {
+  return fetchJson("/auth/resend-verification", {
+    method: "POST",
+    body: {
+      email,
+    },
+    sendAuth: false,
+  });
+}
+
+async function requestPasswordResetRequest(email) {
+  return fetchJson("/auth/request-password-reset", {
+    method: "POST",
+    body: {
+      email,
+    },
+    sendAuth: false,
+  });
+}
+
 function buildAuthenticatedState({ user, accessToken, refreshToken, error = null }) {
   return {
     status: "authenticated",
@@ -175,6 +207,96 @@ export function AuthProvider({ children }) {
     [hydrateAuthenticatedSession]
   );
 
+  const completeAuthentication = useCallback(
+    async (response) => {
+      const accessToken = response?.access_token;
+      const refreshToken = response?.refresh_token;
+
+      if (!accessToken || !refreshToken) {
+        setAuthState((current) => ({
+          ...current,
+          error: null,
+        }));
+        return response;
+      }
+
+      setAuthTokens({
+        accessToken,
+        refreshToken,
+      });
+
+      return hydrateAuthenticatedSession({
+        accessToken,
+        refreshToken,
+      });
+    },
+    [hydrateAuthenticatedSession]
+  );
+
+  const register = useCallback(
+    async ({ name, email, password }) => {
+      setAuthState((current) => ({
+        ...current,
+        error: null,
+      }));
+
+      try {
+        const response = await registerRequest({ name, email, password });
+        return await completeAuthentication(response);
+      } catch (error) {
+        setAuthState({
+          ...unauthenticatedState,
+          error:
+            error instanceof ApiError
+              ? getAuthErrorMessage(error.status, error.data, "We could not create your account right now.")
+              : "We could not create your account right now.",
+        });
+        throw error;
+      }
+    },
+    [completeAuthentication]
+  );
+
+  const resendVerification = useCallback(async ({ email }) => {
+    setAuthState((current) => ({
+      ...current,
+      error: null,
+    }));
+
+    try {
+      return await resendVerificationRequest(email);
+    } catch (error) {
+      setAuthState((current) => ({
+        ...current,
+        error:
+          error instanceof ApiError
+            ? getAuthErrorMessage(error.status, error.data, "We could not resend the verification email.")
+            : "We could not resend the verification email.",
+      }));
+      throw error;
+    }
+  }, []);
+
+  const requestPasswordReset = useCallback(async ({ email }) => {
+    setAuthState((current) => ({
+      ...current,
+      error: null,
+    }));
+
+    try {
+      return await requestPasswordResetRequest(email);
+    } catch (error) {
+      setAuthState((current) => ({
+        ...current,
+        error:
+          error instanceof ApiError
+            ? getAuthErrorMessage(error.status, error.data, "We could not send the reset instructions.")
+            : "We could not send the reset instructions.",
+      }));
+      throw error;
+    }
+  }, []);
+
   const clearError = useCallback(() => {
     setAuthState((current) => ({
       ...current,
@@ -197,6 +319,9 @@ export function AuthProvider({ children }) {
         isRestoring: authState.status === "loading",
         login,
         logout,
+        register,
+        resendVerification,
+        requestPasswordReset,
         restoreSession,
       }}
     >
