@@ -10,6 +10,7 @@ interface User {
   id?: string | number;
   username?: string | null;
   email?: string | null;
+  role?: string;
   [key: string]: unknown;
 }
 
