@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { C } from "@/constants/colors";
 import Sidebar from "@/components/layout/Sidebar";
