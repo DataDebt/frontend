@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint src",
+    "test": "node --test src/context/register-result.test.mjs src/components/auth/auth-form-utils.test.mjs src/components/layout/sidebar-user.test.mjs"
   },
   "dependencies": {
     "next": "^16.1.7",

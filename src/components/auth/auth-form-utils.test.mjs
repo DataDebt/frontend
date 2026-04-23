@@ -5,7 +5,7 @@ import {
   validatePasswordResetRequest,
   validateResetPasswordFields,
   validateRegisterFields,
-} from "./auth-form-utils.mjs";
+} from "./auth-form-utils.ts";
 
 test("validateLoginFields flags invalid email and short password", () => {
   assert.deepEqual(validateLoginFields({ email: "bad", password: "123" }), {

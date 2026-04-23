@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getRegisterAuthenticationTokens, normalizeRegisterResult } from "./register-result.mjs";
+import { getRegisterAuthenticationTokens, normalizeRegisterResult } from "./register-result.ts";
 
 test("normalizeRegisterResult returns pending verification when tokens are missing", () => {
   assert.deepEqual(normalizeRegisterResult({ message: "Verify your email" }), {

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getUserDisplayName, getUserEmailLabel, getUserInitials } from "./sidebar-user.mjs";
+import { getUserDisplayName, getUserEmailLabel, getUserInitials } from "./sidebar-user.ts";
 
 test("getUserDisplayName falls back to a neutral role label", () => {
   assert.equal(getUserDisplayName(null, "user"), "Usuario");
