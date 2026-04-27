@@ -3,6 +3,8 @@
 import LoginScreen from "@/components/views/LoginScreen";
 import { C } from "@/constants/colors";
 import { useAuth } from "@/context/AuthContext";
+import { resolveLayoutRole } from "@/app/layout-role";
+import AdminLayout from "@/layouts/AdminLayout";
 import UserLayout from "@/layouts/UserLayout";
 
 function SessionRestoreGate() {
@@ -52,7 +54,7 @@ function SessionRestoreGate() {
 }
 
 export default function Page() {
-  const { isAuthenticated, isRestoring } = useAuth();
+  const { isAuthenticated, isRestoring, user } = useAuth();
 
   if (isRestoring) {
     return <SessionRestoreGate />;
@@ -60,6 +62,10 @@ export default function Page() {
 
   if (!isAuthenticated) {
     return <LoginScreen />;
+  }
+
+  if (resolveLayoutRole(user) === "admin") {
+    return <AdminLayout />;
   }
 
   return <UserLayout />;
