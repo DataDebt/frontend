@@ -118,19 +118,14 @@ export function buildApiUrl(path = ""): string {
 }
 
 function shouldAttachAuthHeader(
-  path: string,
-  requestUrl: string,
-  explicitSendAuth: boolean | undefined
+  explicitSendAuth: boolean | undefined,
+  requestUrl: string
 ): boolean {
-  if (explicitSendAuth === true) {
-    return true;
-  }
-
   if (explicitSendAuth === false) {
     return false;
   }
 
-  if (!isAbsoluteUrl(path)) {
+  if (!isAbsoluteUrl(requestUrl) || explicitSendAuth === true) {
     return true;
   }
 
@@ -191,7 +186,7 @@ export async function apiRequest(path: string, options: ApiRequestOptions = {}):
 
   const requestUrl = buildApiUrl(path);
   const authToken = accessToken ?? token;
-  if (authToken && shouldAttachAuthHeader(path, requestUrl, sendAuth)) {
+  if (authToken && shouldAttachAuthHeader(sendAuth, requestUrl)) {
     headers.set("Authorization", `Bearer ${authToken}`);
   }
 

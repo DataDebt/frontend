@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { C } from "@/constants/colors";
-import { MdDomain, MdBarChart, MdAssignment, MdLogout } from "react-icons/md";
+import { MdDomain, MdBarChart, MdAssignment, MdInfo, MdPeople, MdLogout } from "react-icons/md";
 import { getUserDisplayName, getUserEmailLabel, getUserInitials } from "./sidebar-user";
 
 interface User {
@@ -19,19 +19,26 @@ interface SidebarProps {
   active: string;
   onNav: (key: string) => void;
   onLogout: () => void;
+  onProfileClick: () => void;
   user?: User | null;
 }
 
-export default function Sidebar({ role, active, onNav, onLogout, user = null }: SidebarProps) {
+export default function Sidebar({ role, active, onNav, onLogout, onProfileClick, user = null }: SidebarProps) {
   const adminItems: NavItem[] = [
     { key: "domains", icon: <MdDomain size={20} />, label: "Dominios" },
     { key: "reports", icon: <MdBarChart size={20} />, label: "Reportes" },
     { key: "evaluations", icon: <MdAssignment size={20} />, label: "Evaluaciones" },
+    { key: "users", icon: <MdPeople size={20} />, label: "Usuarios" },
   ];
   const userItems: NavItem[] = [
     { key: "my-evaluations", icon: <MdAssignment size={20} />, label: "Mis Evaluaciones" },
   ];
-  const items = role === "admin" ? adminItems : userItems;
+  const extraItem: NavItem = {
+    key: "datadebt",
+    icon: <MdInfo size={20} />,
+    label: "Deuda de datos?",
+  };
+  const items = [...(role === "admin" ? adminItems : userItems), extraItem];
   const displayName = getUserDisplayName(user, role);
   const displayEmail = getUserEmailLabel(user);
   const avatarText = getUserInitials(user, role);
@@ -40,12 +47,13 @@ export default function Sidebar({ role, active, onNav, onLogout, user = null }: 
     <div
       style={{
         width: 230,
-        minHeight: "100vh",
+        height: "100vh",
+        position: "sticky",
+        top: 0,
         background: C.sidebar,
         display: "flex",
         flexDirection: "column",
         boxShadow: "4px 0 24px rgba(0,0,0,0.18)",
-        position: "relative",
         zIndex: 10,
       }}
     >
@@ -76,7 +84,7 @@ export default function Sidebar({ role, active, onNav, onLogout, user = null }: 
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, padding: "16px 12px" }}>
+      <nav style={{ flex: 1, padding: "16px 12px", overflowY: "auto", scrollbarWidth: "thin" }}>
         {items.map(({ key, icon, label }) => {
           const isActive = active === key;
           return (
@@ -131,7 +139,8 @@ export default function Sidebar({ role, active, onNav, onLogout, user = null }: 
 
       {/* User / Logout */}
       <div style={{ padding: "16px 12px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-        <div
+        <button
+          onClick={onProfileClick}
           style={{
             display: "flex",
             alignItems: "center",
@@ -140,6 +149,17 @@ export default function Sidebar({ role, active, onNav, onLogout, user = null }: 
             borderRadius: 10,
             background: "rgba(255,255,255,0.06)",
             marginBottom: 8,
+            border: "none",
+            width: "100%",
+            cursor: "pointer",
+            transition: "background .15s",
+            textAlign: "left",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "rgba(255,255,255,0.06)";
           }}
         >
           <div
@@ -162,7 +182,7 @@ export default function Sidebar({ role, active, onNav, onLogout, user = null }: 
             <div style={{ color: "#fff", fontSize: 13, fontWeight: 600 }}>{displayName}</div>
             <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>{displayEmail}</div>
           </div>
-        </div>
+        </button>
         <button
           onClick={onLogout}
           style={{
