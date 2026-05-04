@@ -10,7 +10,7 @@ interface User {
   id?: string | number;
   username?: string | null;
   email?: string | null;
-  role?: string;
+  role?: string | null;
   [key: string]: unknown;
 }
 
@@ -46,6 +46,13 @@ interface AuthContextValue extends AuthState {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const SESSION_EXPIRED_MESSAGE = "Your session expired. Please sign in again.";
+const SESSION_RESTORE_TIMEOUT_MS = 5000;
+
+function timeoutReject(ms: number): Promise<never> {
+  return new Promise((_resolve, reject) => {
+    setTimeout(() => reject(new Error("Session restoration timed out")), ms);
+  });
+}
 
 function isUnauthorizedError(error: unknown): boolean {
   return error instanceof ApiError && (error.status === 401 || error.status === 403);
@@ -185,10 +192,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAuthState((current) => ({ ...current, status: "loading", error: null }));
 
     try {
-      return await hydrateAuthenticatedSession({
-        accessToken: storedTokens.accessToken,
-        refreshToken: storedTokens.refreshToken,
-      });
+      return await Promise.race([
+        hydrateAuthenticatedSession({
+          accessToken: storedTokens.accessToken,
+          refreshToken: storedTokens.refreshToken,
+        }),
+        timeoutReject(SESSION_RESTORE_TIMEOUT_MS),
+      ]);
     } catch {
       clearAuthTokens();
       setAuthState({ ...unauthenticatedState, error: SESSION_EXPIRED_MESSAGE });
