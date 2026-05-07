@@ -27,16 +27,16 @@ export default function Sidebar({ role, active, onNav, onLogout, onProfileClick,
   const adminItems: NavItem[] = [
     { key: "domains", icon: <MdDomain size={20} />, label: "Dominios" },
     { key: "reports", icon: <MdBarChart size={20} />, label: "Reportes" },
-    { key: "evaluations", icon: <MdAssignment size={20} />, label: "Evaluaciones" },
+    { key: "evaluations", icon: <MdAssignment size={20} />, label: "Evaluaciónes" },
     { key: "users", icon: <MdPeople size={20} />, label: "Usuarios" },
   ];
   const userItems: NavItem[] = [
-    { key: "my-evaluations", icon: <MdAssignment size={20} />, label: "Mis Evaluaciones" },
+    { key: "my-evaluations", icon: <MdAssignment size={20} />, label: "Mis Evaluaciónes" },
   ];
   const extraItem: NavItem = {
     key: "datadebt",
     icon: <MdInfo size={20} />,
-    label: "Deuda de datos?",
+    label: "¿Deuda de datos?",
   };
   const items = [...(role === "admin" ? adminItems : userItems), extraItem];
   const displayName = getUserDisplayName(user, role);

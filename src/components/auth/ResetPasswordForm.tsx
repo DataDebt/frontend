@@ -60,7 +60,7 @@ export default function ResetPasswordForm({ error, isSubmitting, onSubmit, token
     <>
       <div style={{ marginBottom: 16, position: "relative" }}>
         <input
-          placeholder="New password"
+          placeholder="Nueva contraseña"
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(event) => {
@@ -90,7 +90,7 @@ export default function ResetPasswordForm({ error, isSubmitting, onSubmit, token
 
       <div style={{ marginBottom: 20, position: "relative" }}>
         <input
-          placeholder="Confirm new password"
+          placeholder="Confirmar nueva contraseña"
           type={showConfirmPassword ? "text" : "password"}
           value={confirmPassword}
           onChange={(event) => {
@@ -144,7 +144,7 @@ export default function ResetPasswordForm({ error, isSubmitting, onSubmit, token
           animation: shake ? "shake .4s" : "none",
         }}
       >
-        {isSubmitting ? "Updating password..." : "Save new password"}
+        {isSubmitting ? "Actualizando contraseña..." : "Guardar nueva contraseña"}
       </button>
     </>
   );

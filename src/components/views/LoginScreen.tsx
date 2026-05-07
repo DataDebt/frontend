@@ -16,16 +16,16 @@ interface ModeContent {
 
 const authModeContent: Record<AuthMode, ModeContent> = {
   login: {
-    title: "Welcome Back",
-    subtitle: "Sign in to your account",
+    title: "Bienvenido de nuevo",
+    subtitle: "Inicia sesión en tu cuenta",
   },
   register: {
-    title: "Create your account",
-    subtitle: "Start your data debt assessment journey",
+    title: "Crea tu cuenta",
+    subtitle: "Comienza tu evaluación de deuda de datos",
   },
   forgotPassword: {
-    title: "Reset your password",
-    subtitle: "We will send instructions to your email",
+    title: "Restablece tu contraseña",
+    subtitle: "Te enviaremos instrucciones a tu correo",
   },
 };
 
@@ -82,7 +82,7 @@ export default function LoginScreen() {
     setNotice(
       (typeof r?.message === "string" ? r.message : null) ||
       (typeof r?.detail === "string" ? r.detail : null) ||
-      "Verification instructions sent."
+      "Instrucciones de verificación enviadas."
     );
     return response;
   }
@@ -98,7 +98,7 @@ export default function LoginScreen() {
       setNotice(
         (typeof r?.message === "string" ? r.message : null) ||
         (typeof r?.detail === "string" ? r.detail : null) ||
-        "Reset instructions sent. Check your inbox."
+        "Instrucciones enviadas. Revisa tu bandeja de entrada."
       );
       return response;
     } finally {

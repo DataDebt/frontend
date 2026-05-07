@@ -45,7 +45,7 @@ interface AuthContextValue extends AuthState {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const SESSION_EXPIRED_MESSAGE = "Your session expired. Please sign in again.";
+const SESSION_EXPIRED_MESSAGE = "Tu sesión expiró. Inicia sesión de nuevo.";
 const SESSION_RESTORE_TIMEOUT_MS = 5000;
 
 function timeoutReject(ms: number): Promise<never> {
@@ -224,7 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           error:
             error instanceof ApiError
               ? getAuthErrorMessage(error.status, error.data)
-              : "We could not sign you in. Please try again.",
+              : "No pudimos iniciar sesión. Intenta de nuevo.",
         });
         throw error;
       }
@@ -259,8 +259,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           ...unauthenticatedState,
           error:
             error instanceof ApiError
-              ? getAuthErrorMessage(error.status, error.data, "We could not create your account right now.")
-              : "We could not create your account right now.",
+              ? getAuthErrorMessage(error.status, error.data, "No pudimos crear tu cuenta en este momento.")
+              : "No pudimos crear tu cuenta en este momento.",
         });
         throw error;
       }
@@ -278,8 +278,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         ...current,
         error:
           error instanceof ApiError
-            ? getAuthErrorMessage(error.status, error.data, "We could not resend the verification email.")
-            : "We could not resend the verification email.",
+            ? getAuthErrorMessage(error.status, error.data, "No pudimos reenviar el correo de verificación.")
+            : "No pudimos reenviar el correo de verificación.",
       }));
       throw error;
     }
@@ -295,8 +295,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         ...current,
         error:
           error instanceof ApiError
-            ? getAuthErrorMessage(error.status, error.data, "We could not send the reset instructions.")
-            : "We could not send the reset instructions.",
+            ? getAuthErrorMessage(error.status, error.data, "No pudimos enviar las instrucciones de restablecimiento.")
+            : "No pudimos enviar las instrucciones de restablecimiento.",
       }));
       throw error;
     }
@@ -306,7 +306,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       return await confirmEmailRequest(token);
     } catch (error) {
-      throw createNormalizedAuthActionError(error, "We could not confirm your email.");
+      throw createNormalizedAuthActionError(error, "No pudimos confirmar tu correo.");
     }
   }, []);
 
@@ -314,7 +314,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       return await resetPasswordRequest(token, newPassword);
     } catch (error) {
-      throw createNormalizedAuthActionError(error, "We could not reset your password.");
+      throw createNormalizedAuthActionError(error, "No pudimos restablecer tu contraseña.");
     }
   }, []);
 

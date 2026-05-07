@@ -91,7 +91,7 @@ export function validateResetPasswordFields({
   const errors: FieldErrors<ResetPasswordFields> = {};
 
   if (!(token || "").trim()) {
-    errors.token = "Missing reset token";
+    errors.token = "Falta el token de restablecimiento";
   }
 
   if ((password || "").length < 8) {

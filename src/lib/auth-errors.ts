@@ -1,12 +1,12 @@
 export const AUTH_ERROR_MESSAGES: Record<number, string> = {
-  400: "We could not process your sign-in request.",
-  401: "The email or password you entered is incorrect.",
-  403: "Please verify your email address before signing in.",
-  404: "We could not find the authentication endpoint.",
-  409: "An account with those credentials already exists.",
-  422: "Please check the highlighted fields and try again.",
-  429: "Too many attempts. Please wait a moment and try again.",
-  500: "The server had a problem completing your sign-in.",
+  400: "No pudimos procesar tu solicitud de inicio de sesión.",
+  401: "El correo o la contraseña que ingresaste son incorrectos.",
+  403: "Verifica tu correo electrónico antes de iniciar sesión.",
+  404: "No pudimos encontrar el servicio de autenticación.",
+  409: "Ya existe una cuenta con esas credenciales.",
+  422: "Revisa los campos marcados e intenta de nuevo.",
+  429: "Demasiados intentos. Espera un momento e intenta de nuevo.",
+  500: "El servidor tuvo un problema al completar tu inicio de sesión.",
 };
 
 function extractBackendDetail(responseOrDetail: unknown): string | null {
@@ -58,7 +58,7 @@ function isGenericForbiddenDetail(detail: string): boolean {
 export function getAuthErrorMessage(
   status: number,
   responseOrDetail?: unknown,
-  fallback = "Something went wrong during authentication. Please try again."
+  fallback = "Algo salió mal durante la autenticación. Intenta de nuevo."
 ): string {
   const backendDetail = extractBackendDetail(responseOrDetail);
 

@@ -30,11 +30,11 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
       setNotice(
         (typeof r?.message === "string" ? r.message : null) ||
         (typeof r?.detail === "string" ? r.detail : null) ||
-        "Your password has been updated."
+        "Tu contraseña ha sido actualizada."
       );
       return response;
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "We could not reset your password.");
+      setErrorMessage(error instanceof Error ? error.message : "No pudimos restablecer tu contraseña.");
       throw error;
     } finally {
       setIsSubmitting(false);
@@ -43,12 +43,12 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
 
   if (!token) {
     return (
-      <AuthShell title="Reset your password" subtitle="Open the full reset link from your email to continue">
+      <AuthShell title="Restablece tu contraseña" subtitle="Abre el enlace completo de restablecimiento desde tu correo para continuar">
         <AuthStatusCard
           status="error"
-          title="Reset link required"
-          message="This password reset page needs the token from your email link. Open the latest reset email and try again."
-          primaryAction={{ href: "/", label: "Back to sign in" }}
+          title="Enlace de restablecimiento requerido"
+          message="Esta pagina necesita el token del enlace de tu correo. Abre el último correo de restablecimiento e intenta de nuevo."
+          primaryAction={{ href: "/", label: "Volver al inicio de sesión" }}
         />
       </AuthShell>
     );
@@ -56,17 +56,17 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
 
   return (
     <AuthShell
-      title={isComplete ? "Password updated" : "Choose a new password"}
+      title={isComplete ? "Contraseña actualizada" : "Elige una nueva contraseña"}
       subtitle={
-        isComplete ? "Your credentials are ready to use" : "Enter a secure password to finish resetting your account"
+        isComplete ? "Tus credenciales están listas para usar" : "Ingresa una contraseña segura para terminar de restablecer tu cuenta"
       }
     >
       {isComplete ? (
         <AuthStatusCard
           status="success"
-          title="Password reset complete"
-          message={notice || "Your password has been updated successfully."}
-          primaryAction={{ href: "/", label: "Sign in" }}
+          title="Restablecimiento completado"
+          message={notice || "Tu contraseña se actualizó exitosamente."}
+          primaryAction={{ href: "/", label: "Iniciar sesión" }}
         />
       ) : (
         <ResetPasswordForm
@@ -79,7 +79,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
 
       {!isComplete ? (
         <p style={{ textAlign: "center", marginTop: 20, fontSize: 13, color: "#5a8a72" }}>
-          Remembered your password?{" "}
+           ¿Recordaste tu contraseña?{" "}
           <Link
             href="/"
             style={{
@@ -89,7 +89,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
               textDecoration: "none",
             }}
           >
-            Back to login
+            Volver al inicio de sesión
           </Link>
         </p>
       ) : null}

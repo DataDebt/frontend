@@ -66,7 +66,7 @@ export default function LoginForm({
     <>
       <div style={{ marginBottom: 20 }}>
         <input
-          placeholder="Email"
+          placeholder="Correo electrónico"
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);
@@ -79,7 +79,7 @@ export default function LoginForm({
 
       <div style={{ marginBottom: 20, position: "relative" }}>
         <input
-          placeholder="Password"
+          placeholder="Contraseña"
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(event) => {
@@ -117,7 +117,7 @@ export default function LoginForm({
           style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: C.text, cursor: "pointer" }}
         >
           <input type="checkbox" />
-          Remember me
+          Recordarme
         </label>
         <button
           type="button"
@@ -131,7 +131,7 @@ export default function LoginForm({
             padding: 0,
           }}
         >
-          Forgot your password?
+          ¿Olvidaste tu contraseña?
         </button>
       </div>
 
@@ -155,11 +155,11 @@ export default function LoginForm({
           animation: shake ? "shake .4s" : "none",
         }}
       >
-        {isSubmitting ? "Signing in..." : "Login"}
+        {isSubmitting ? "Iniciando sesión..." : "Iniciar sesión"}
       </button>
 
       <p style={{ textAlign: "center", marginTop: 20, fontSize: 13, color: C.textMuted }}>
-        Don&apos;t have an account?{" "}
+        ¿No tienes cuenta?{" "}
         <button
           type="button"
           onClick={onSwitchToRegister}
@@ -172,7 +172,7 @@ export default function LoginForm({
             padding: 0,
           }}
         >
-          Sign Up Now
+          Regístrate ahora
         </button>
       </p>
     </>

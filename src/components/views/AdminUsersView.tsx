@@ -91,7 +91,7 @@ export default function AdminUsersView() {
 
   return (
     <div style={{ padding: "20px 36px 36px" }}>
-      <TopBar title="Gestion de Usuarios" subtitle="Administra roles y permisos de las cuentas registradas" />
+      <TopBar title="Gestión de Usuarios" subtitle="Administra roles y permisos de las cuentas registradas" />
 
       <div style={{ padding: "20px 0" }}>
         {error && (
@@ -157,7 +157,7 @@ export default function AdminUsersView() {
                     <button
                       onClick={() => handleRemoveAdmin(u.id)}
                       disabled={adminCount <= 1}
-                      title={adminCount <= 1 ? "No se puede remover el ultimo admin" : "Quitar rol de administrador"}
+                      title={adminCount <= 1 ? "No se puede remover el último admin" : "Quitar rol de administrador"}
                       style={{
                         padding: "7px 16px",
                         background: adminCount <= 1 ? "#f5f5f5" : "#fff3f3",

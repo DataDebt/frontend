@@ -50,7 +50,7 @@ export default function ForgotPasswordForm({
     <>
       <div style={{ marginBottom: 20 }}>
         <input
-          placeholder="Email"
+          placeholder="Correo electrónico"
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);
@@ -98,11 +98,11 @@ export default function ForgotPasswordForm({
           animation: shake ? "shake .4s" : "none",
         }}
       >
-        {isSubmitting ? "Sending..." : "Send reset instructions"}
+        {isSubmitting ? "Enviando..." : "Enviar instrucciones"}
       </button>
 
       <p style={{ textAlign: "center", marginTop: 20, fontSize: 13, color: C.textMuted }}>
-        Remembered your password?{" "}
+         ¿Recordaste tu contraseña?{" "}
         <button
           type="button"
           onClick={onSwitchToLogin}
@@ -115,7 +115,7 @@ export default function ForgotPasswordForm({
             padding: 0,
           }}
         >
-          Back to login
+          Volver al inicio de sesión
         </button>
       </p>
     </>

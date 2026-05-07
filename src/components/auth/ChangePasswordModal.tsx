@@ -22,9 +22,9 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
   const [success, setSuccess] = useState(false);
 
   const fieldErrors: Record<string, string> = {};
-  if (currentPassword && currentPassword.length < 8) fieldErrors.currentPassword = "Minimo 8 caracteres";
-  if (newPassword && newPassword.length < 8) fieldErrors.newPassword = "Minimo 8 caracteres";
-  if (confirmPassword && newPassword && confirmPassword !== newPassword) fieldErrors.confirmPassword = "Las contrasenas no coinciden";
+  if (currentPassword && currentPassword.length < 8) fieldErrors.currentPassword = "Mínimo 8 caracteres";
+  if (newPassword && newPassword.length < 8) fieldErrors.newPassword = "Mínimo 8 caracteres";
+  if (confirmPassword && newPassword && confirmPassword !== newPassword) fieldErrors.confirmPassword = "Las contraseñas no coinciden";
 
   function inputStyle(hasError: boolean) {
     return {
@@ -56,7 +56,7 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
       });
       setSuccess(true);
     } catch (err) {
-      setError(err instanceof ApiError ? String(err.data || err.message) : "No se pudo cambiar la contrasena.");
+      setError(err instanceof ApiError ? String(err.data || err.message) : "No se pudo cambiar la contraseña.");
     } finally {
       setSubmitting(false);
     }
@@ -87,14 +87,14 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
         }}
       >
         <h2 style={{ margin: "0 0 24px", fontSize: 20, fontWeight: 800, color: C.text }}>
-          Cambiar contrasena
+          Cambiar contraseña
         </h2>
 
         {success ? (
           <div style={{ textAlign: "center", padding: "20px 0" }}>
             <div style={{ fontSize: 48, marginBottom: 12 }}>✓</div>
             <p style={{ color: C.text, fontWeight: 600, fontSize: 15, marginBottom: 16 }}>
-              Contrasena actualizada exitosamente.
+              Contraseña actualizada exitosamente.
             </p>
             <button
               onClick={onClose}
@@ -122,13 +122,13 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
 
             <div style={{ marginBottom: 16, position: "relative" }}>
               <label style={{ fontSize: 13, fontWeight: 600, color: C.text, display: "block", marginBottom: 6 }}>
-                Contrasena actual
+                Contraseña actual
               </label>
               <input
                 type={showCurrent ? "text" : "password"}
                 value={currentPassword}
                 onChange={(e) => { setCurrentPassword(e.target.value); setError(null); }}
-                placeholder="Tu contrasena actual"
+                placeholder="Tu contraseña actual"
                 style={inputStyle(Boolean(fieldErrors.currentPassword))}
               />
               <span
@@ -144,13 +144,13 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
 
             <div style={{ marginBottom: 16, position: "relative" }}>
               <label style={{ fontSize: 13, fontWeight: 600, color: C.text, display: "block", marginBottom: 6 }}>
-                Nueva contrasena
+                Nueva contraseña
               </label>
               <input
                 type={showNew ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => { setNewPassword(e.target.value); setError(null); }}
-                placeholder="Minimo 8 caracteres"
+                placeholder="Mínimo 8 caracteres"
                 style={inputStyle(Boolean(fieldErrors.newPassword))}
               />
               <span
@@ -166,13 +166,13 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
 
             <div style={{ marginBottom: 24, position: "relative" }}>
               <label style={{ fontSize: 13, fontWeight: 600, color: C.text, display: "block", marginBottom: 6 }}>
-                Confirmar nueva contrasena
+                Confirmar nueva contraseña
               </label>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => { setConfirmPassword(e.target.value); setError(null); }}
-                placeholder="Repite la nueva contrasena"
+                placeholder="Repite la nueva contraseña"
                 style={inputStyle(Boolean(fieldErrors.confirmPassword))}
               />
               {fieldErrors.confirmPassword && (
@@ -211,7 +211,7 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
                   opacity: submitting ? 0.7 : 1,
                 }}
               >
-                {submitting ? "Cambiando..." : "Cambiar contrasena"}
+                {submitting ? "Cambiando..." : "Cambiar contraseña"}
               </button>
             </div>
           </>

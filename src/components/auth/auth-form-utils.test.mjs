@@ -55,7 +55,7 @@ test("validateResetPasswordFields requires token, password length, and matching 
       confirmPassword: "different",
     }),
     {
-      token: "Missing reset token",
+      token: "Falta el token de restablecimiento",
       password: "La contraseña debe tener al menos 8 caracteres",
       confirmPassword: "Las contraseñas no coinciden",
     }

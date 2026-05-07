@@ -6,16 +6,16 @@ import { C } from "@/constants/colors";
 
 const featureHighlights: [string, string][] = [
   [
-    "5-stage guided evaluation",
-    "using Likert-scale assessments for a deep, structured diagnosis of your organization's health.",
+    "Evaluación guiada en 5 etapas",
+    "usando evaluaciónes con escala Likert para un diagnóstico profundo y estructurado de la salud de tu organización.",
   ],
   [
-    "Domain-specific qualitative indexing",
-    "that calculates a score from 1 to 5 for Quality, Architecture, Governance, and Usage.",
+    "Indexación cualitativa por dominio",
+    "que calcula una puntuación de 1 a 5 para Calidad, Arquitectura, Gobernanza y Uso.",
   ],
   [
-    "Visual and automated reporting",
-    "that translates your data debt index into clear, actionable insights for executive decision-making.",
+    "Reportes visuales y automatizados",
+    "que traducen tu índice de deuda de datos en información clara y accionable para la toma de decisiones.",
   ],
 ];
 
@@ -45,15 +45,15 @@ export default function AuthShell({ title, subtitle, children }: AuthShellProps)
           Data Debt
         </h1>
         <p style={{ fontSize: 20, color: C.accent, fontWeight: 600, marginBottom: 28 }}>
-          Your web tool to diagnosis data deb
+          Tu herramienta web para diagnosticar la deuda de datos
         </p>
         <p style={{ fontSize: 15, color: "#2a5c3f", lineHeight: 1.7, maxWidth: 460, marginBottom: 20 }}>
-          Data Deb is the web platform that guides organizations through a structured process to analize the internal
-          data deb.
+          DataDebt es la plataforma web que guia a las organizaciónes a través de un proceso estructurado para analizar
+          su deuda de datos interna.
         </p>
         <p style={{ fontSize: 15, color: "#2a5c3f", lineHeight: 1.7, maxWidth: 460, marginBottom: 32 }}>
-          Data debt encompasses issues with quality, architecture, governance, and usage, stemming from technical
-          shortcuts, fragmented architectures, immature governance, low data literacy, and a lack of executive support.
+          La deuda de datos abarca problemas de calidad, arquitectura, gobernanza y uso, derivados de atajos técnicos,
+          arquitecturas fragmentadas, gobernanza inmadura, baja alfabetización de datos y falta de apoyo ejecutivo.
         </p>
         {featureHighlights.map(([bold, rest]) => (
           <div key={bold} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 12 }}>

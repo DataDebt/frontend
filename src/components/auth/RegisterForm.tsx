@@ -88,7 +88,7 @@ export default function RegisterForm({
       setResendMessage(
         (typeof r?.message === "string" ? r.message : null) ||
         (typeof r?.detail === "string" ? r.detail : null) ||
-        "We sent another verification email if the account exists."
+        "Enviamos otro correo de verificación si la cuenta existe."
       );
     } catch {
       return;
@@ -99,7 +99,7 @@ export default function RegisterForm({
     <>
       <div style={{ marginBottom: 16 }}>
         <input
-          placeholder="Username"
+          placeholder="Nombre de usuario"
           value={username}
           onChange={(event) => {
             setUsername(event.target.value);
@@ -115,7 +115,7 @@ export default function RegisterForm({
 
       <div style={{ marginBottom: 16 }}>
         <input
-          placeholder="Email"
+          placeholder="Correo electrónico"
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);
@@ -129,7 +129,7 @@ export default function RegisterForm({
 
       <div style={{ marginBottom: 16, position: "relative" }}>
         <input
-          placeholder="Password"
+          placeholder="Contraseña"
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(event) => {
@@ -160,7 +160,7 @@ export default function RegisterForm({
 
       <div style={{ marginBottom: 20, position: "relative" }}>
         <input
-          placeholder="Confirm password"
+          placeholder="Confirmar contraseña"
           type={showConfirmPassword ? "text" : "password"}
           value={confirmPassword}
           onChange={(event) => {
@@ -220,7 +220,7 @@ export default function RegisterForm({
           animation: shake ? "shake .4s" : "none",
         }}
       >
-        {isSubmitting ? "Creating account..." : "Create account"}
+        {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
       </button>
 
       <button
@@ -239,11 +239,11 @@ export default function RegisterForm({
           cursor: "pointer",
         }}
       >
-        Resend verification email
+        Reenviar correo de verificación
       </button>
 
       <p style={{ textAlign: "center", marginTop: 20, fontSize: 13, color: C.textMuted }}>
-        Already have an account?{" "}
+        ¿Ya tienes cuenta?{" "}
         <button
           type="button"
           onClick={onSwitchToLogin}
@@ -256,7 +256,7 @@ export default function RegisterForm({
             padding: 0,
           }}
         >
-          Sign in
+          Iniciar sesión
         </button>
       </p>
     </>

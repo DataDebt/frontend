@@ -35,7 +35,7 @@ export function normalizeRegisterResult(payload: Record<string, unknown>): Regis
     message:
       (typeof payload?.message === "string" ? payload.message : null) ||
       (typeof payload?.detail === "string" ? payload.detail : null) ||
-      "Check your inbox to verify your email before signing in.",
+      "Revisa tu bandeja de entrada para verificar tu correo antes de iniciar sesión.",
   };
 }
 

@@ -42,9 +42,9 @@ function SessionRestoreGate() {
             animation: "spin 0.9s linear infinite",
           }}
         />
-        <h2 style={{ margin: 0, color: C.text, fontSize: 24, fontWeight: 700 }}>Restoring session</h2>
+        <h2 style={{ margin: 0, color: C.text, fontSize: 24, fontWeight: 700 }}>Restaurando sesión</h2>
         <p style={{ margin: "10px 0 0", color: C.textMuted, fontSize: 14 }}>
-          We are checking your saved credentials and loading your workspace.
+          Estamos verificando tus credenciales guardadas y cargando tu espacio de trabajo.
         </p>
       </div>
 

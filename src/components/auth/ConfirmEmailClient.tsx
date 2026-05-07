@@ -12,7 +12,7 @@ interface ConfirmEmailClientProps {
 export default function ConfirmEmailClient({ token }: ConfirmEmailClientProps) {
   const { confirmEmail } = useAuth();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
-  const [message, setMessage] = useState("We're validating your confirmation link and activating your account.");
+  const [message, setMessage] = useState("Estamos validando tu enlace de confirmación y activando tu cuenta.");
   const [errorMessage, setErrorMessage] = useState("");
   const attemptedTokenRef = useRef<string | null>(null);
   const missingToken = !token;
@@ -41,7 +41,7 @@ export default function ConfirmEmailClient({ token }: ConfirmEmailClientProps) {
         setMessage(
           (typeof r?.message === "string" ? r.message : null) ||
           (typeof r?.detail === "string" ? r.detail : null) ||
-          "Your email has been confirmed. You can sign in now."
+          "Tu correo ha sido confirmado. Ya puedes iniciar sesión."
         );
       })
       .catch((error) => {
@@ -50,11 +50,11 @@ export default function ConfirmEmailClient({ token }: ConfirmEmailClientProps) {
         }
 
         setStatus("error");
-        setMessage("We could not confirm this email link.");
+        setMessage("No pudimos confirmar este enlace de correo.");
         setErrorMessage(
           error instanceof Error
             ? error.message
-            : "This confirmation link may have expired, already been used, or is otherwise invalid."
+            : "Este enlace de confirmación puede haber expirado, ya fue usado o no es válido."
         );
       });
 
@@ -65,33 +65,33 @@ export default function ConfirmEmailClient({ token }: ConfirmEmailClientProps) {
 
   if (missingToken) {
     return (
-      <AuthShell title="Confirm your email" subtitle="We're checking your verification link">
+      <AuthShell title="Confirma tu correo electrónico" subtitle="Estamos verificando tu enlace de confirmación">
         <AuthStatusCard
           status="error"
-          title="Confirmation link required"
-          message="This confirmation link is missing its token. Request a new verification email and try again."
-          primaryAction={{ href: "/", label: "Go to sign in" }}
-          secondaryAction={{ href: "/", label: "Back to authentication" }}
+          title="Enlace de confirmación requerido"
+          message="A este enlace le falta el token. Solicita un nuevo correo de verificación e intenta de nuevo."
+          primaryAction={{ href: "/", label: "Ir al inicio de sesión" }}
+          secondaryAction={{ href: "/", label: "Volver a autenticación" }}
         />
       </AuthShell>
     );
   }
 
   return (
-    <AuthShell title="Confirm your email" subtitle="We're checking your verification link">
+    <AuthShell title="Confirma tu correo electrónico" subtitle="Estamos verificando tu enlace de confirmación">
       <AuthStatusCard
         status={status}
         title={
           status === "success"
-            ? "Email confirmed"
+            ? "Correo confirmado"
             : status === "error"
-              ? "Confirmation failed"
-              : "Confirming your email"
+              ? "Confirmación fallida"
+              : "Confirmando tu correo"
         }
         message={message}
         detail={status === "error" ? errorMessage : null}
-        primaryAction={status === "loading" ? null : { href: "/", label: "Go to sign in" }}
-        secondaryAction={status === "error" ? { href: "/", label: "Back to authentication" } : null}
+        primaryAction={status === "loading" ? null : { href: "/", label: "Ir al inicio de sesión" }}
+        secondaryAction={status === "error" ? { href: "/", label: "Volver a autenticación" } : null}
       />
     </AuthShell>
   );

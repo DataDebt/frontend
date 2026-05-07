@@ -37,14 +37,14 @@ export default function DataDebtInfoBanner({ onNavigate }: DataDebtInfoBannerPro
             flexShrink: 0,
           }}
         >
-          📊
+          ❓
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 15, color: C.text, marginBottom: 2 }}>
-            Sabes que es la Deuda de Datos?
+            ¿Sabes qué es la Deuda de Datos?
           </div>
           <p style={{ margin: 0, fontSize: 13, color: C.textMuted, lineHeight: 1.55 }}>
-            Costos y riesgos ocultos por decisiones postergadas en la gestion de datos.
+            Costos y riesgos ocultos por decisiones postergadas en la gestión de datos.
             Identificarla ayuda a priorizar mejoras y evitar reprocesos.
           </p>
         </div>
@@ -65,7 +65,7 @@ export default function DataDebtInfoBanner({ onNavigate }: DataDebtInfoBannerPro
           boxShadow: "0 4px 14px rgba(45,159,101,0.3)",
         }}
       >
-        Saber mas &rarr;
+        Saber más &rarr;
       </button>
     </div>
   );
